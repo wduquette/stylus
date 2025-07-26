@@ -1,0 +1,2 @@
+define Today/calendar,dateString,num;
+Today(#cumbrian, "ME-1019-08-01",0);

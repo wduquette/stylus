@@ -13,6 +13,7 @@ import stylus.App;
 import stylus.DataFileException;
 import stylus.calendars.*;
 import stylus.calendars.Calendar;
+import stylus.util.NeroDB;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,14 +34,17 @@ public class CalendarTool implements Tool {
         "calendar.nero",
         "Formats calendars based on calendar data in Nero format.",
         """
-Given a .nero file of calendar data, queries and outputs data from the file,
-formatted for use.
+Given a .nero file of calendar data, produces yearly calendars in
+terminal/Markdown format and does date conversions.
 """,
         CalendarTool::main
     );
 
     //------------------------------------------------------------------------
     // Instance Variables
+
+    private final Joe joe = new Joe();
+    private final Nero nero = new Nero(joe);
 
     // The calendars
     private final Map<String,Calendar> calendars = new HashMap<>();
@@ -86,13 +90,26 @@ formatted for use.
         assert !argq.isEmpty();
         var path = new File(argq.poll()).toPath();
 
+        var db = new NeroDB("""
+define Today/calendar,dateString;
+define Calendar/id, offset;
+define Era/calendar, short, full;
+define PriorEra/calendar, short, full;
+define Week/calendar, offset;
+define Weekday/calendar, seq, full, short, unambiguous, tiny;
+define Month/calendar, seq, days, leapRule, full, short, unambiguous, tiny;
+            """);
+
         try {
-            loadData(path);
-            println("Today is: " + todayString);
-            var list = new ArrayList<>(calendars.keySet());
-            list.remove(primary);
-            list.add(0, primary);
-            println("Calendars: " + String.join(", ", list));
+            db.load(path);
+            println(db.toNero());
+
+//            loadData(path);
+//            println("Today is: " + todayString);
+//            var list = new ArrayList<>(calendars.keySet());
+//            list.remove(primary);
+//            list.add(0, primary);
+//            println("Calendars: " + String.join(", ", list));
         } catch (DataFileException ex) {
             println("Failed to read calendar file: " + ex.getMessage());
             println(ex.getDetails());
