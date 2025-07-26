@@ -7,8 +7,6 @@ define Week/calendar, offset;
 define Weekday/calendar, seq, full, short, unambiguous, tiny;
 define Month/calendar, seq, days, leapRule, full, short, unambiguous, tiny;
 
-Today(#cumbrian, "ME-1019-08-01");
-
 // The Cumbrian calendar starts 978 years before the founding of the
 // colony in Armorica.  We set the epoch day to the first day of the
 // founding year, and so the Cumbrian calendar's epoch offset is

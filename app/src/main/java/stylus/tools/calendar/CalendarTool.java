@@ -91,7 +91,6 @@ terminal/Markdown format and does date conversions.
         var path = new File(argq.poll()).toPath();
 
         var db = new NeroDB("""
-define Today/calendar,dateString;
 define Calendar/id, offset;
 define Era/calendar, short, full;
 define PriorEra/calendar, short, full;
@@ -102,7 +101,25 @@ define Month/calendar, seq, days, leapRule, full, short, unambiguous, tiny;
 
         try {
             db.load(path);
-            println(db.toNero());
+            var errors = db.query("""
+                DuplicateMonth(cal,seq) :-
+                    Month(calendar: cal, seq: seq, full: full1),
+                    Month(calendar: cal, seq: seq, full: full2)
+                    where full1 != full2;
+                DuplicateWeekday(cal,seq) :-
+                    Weekday(calendar: cal, seq: seq, full: full1),
+                    Weekday(calendar: cal, seq: seq, full: full2)
+                    where full1 != full2;
+                
+                TheEra(cal, short) :- Era(cal, short, full);
+                TheEra(cal, short) :- PriorEra(cal, short, full);
+                DuplicateEra(short) :-
+                    TheEra(cal1, short), TheEra(cal2, short)
+                    where cal1 != cal2;
+                """);
+            for (var fact : errors) {
+                System.out.println(fact);
+            }
 
 //            loadData(path);
 //            println("Today is: " + todayString);

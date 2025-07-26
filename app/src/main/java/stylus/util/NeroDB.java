@@ -3,6 +3,7 @@ package stylus.util;
 import com.wjduquette.joe.Joe;
 import com.wjduquette.joe.JoeError;
 import com.wjduquette.joe.SourceBuffer;
+import com.wjduquette.joe.nero.Fact;
 import com.wjduquette.joe.nero.FactSet;
 import com.wjduquette.joe.nero.Nero;
 import com.wjduquette.joe.nero.Schema;
@@ -11,6 +12,8 @@ import stylus.DataFileException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An experimental Nero-based in-memory database, for use from Java code.
@@ -70,6 +73,16 @@ public class NeroDB extends FactSet {
         }
     }
 
+    public List<Fact> query(String query) throws DataFileException {
+        try {
+            var result = nero.execute(new SourceBuffer("*neroDB*", query), this);
+            return new ArrayList<>(result.getInferredFacts());
+        } catch (JoeError ex) {
+            throw new DataFileException("Error in query.", ex);
+        }
+    }
+
+    @SuppressWarnings("unused")
     public String toNero() {
         return nero.asNeroScript(this);
     }
