@@ -1,0 +1,40 @@
+.scroll-pane .viewport {
+    -fx-background-color: white;
+}
+
+.yearView {
+    -fx-font-family: sans-serif;
+    -fx-font-size: 13;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.year-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.month-title {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.weekday-title {
+    -fx-font-weight: bold;
+}
+
+.normal-day {
+    -fx-text-fill: black;
+}
+
+.incident {
+    -fx-text-fill: red;
+}
+
+.anniversary {
+    -fx-text-fill: magenta;
+}
+
+.selected-date {
+    -fx-background-color: lightgray;
+}

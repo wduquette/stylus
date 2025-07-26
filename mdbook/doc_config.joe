@@ -1,0 +1,5 @@
+// Configuration for the Stylus library docs
+DocConfig
+    .inputFolder("../app/src/main/java/stylus")
+    .inputFolder("../app/src/main/resources/stylus")
+    .outputFolder("src/library");

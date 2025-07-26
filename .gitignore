@@ -1,0 +1,5 @@
+temp/
+.idea/
+.gradle/
+app/build
+/*.png
