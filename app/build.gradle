@@ -22,7 +22,7 @@ dependencies {
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13.2'
 
-    implementation files('../../joe/lib/build/libs/joe-0.7.1.jar')
+    implementation files('../../joe/lib/build/libs/joe-0.9.0.jar')
 }
 jar {
     from {
